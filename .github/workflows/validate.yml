@@ -13,3 +13,4 @@ jobs:
       - run: python scripts/validate_repo.py
       - run: python tests/test_reference_resolver.py
       - run: python tests/test_batch_reference_forensics.py
+      - run: python tests/test_citation_review_fixes.py
