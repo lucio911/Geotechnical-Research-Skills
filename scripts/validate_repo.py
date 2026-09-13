@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
+
 import re
 import subprocess
 import sys
@@ -10,7 +11,7 @@ SKILLS = ROOT / "skills"
 NAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 REF_RE = re.compile(r"`(references/[A-Za-z0-9._/-]+\.md)`")
 EXCLUDED_SKILLS = {"abaqus-geotech"}
-VERSION = "0.4.0"
+VERSION = "0.5.0"
 
 
 def frontmatter(text: str):
@@ -28,11 +29,30 @@ def frontmatter(text: str):
     return out
 
 
+def has_skill_trigger(text: str, skill: str) -> bool:
+    """Accept legacy list-style and current mapping-style trigger fixtures."""
+    return bool(
+        re.search(rf"(?m)^\s*skill:\s*{re.escape(skill)}\s*$", text)
+        or re.search(rf"(?m)^\s{{2}}{re.escape(skill)}:\s*$", text)
+    )
+
+
+def run_test(path: Path):
+    return subprocess.run(
+        [sys.executable, str(path)],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
+
+
 def main():
     errors, warnings = [], []
     count = 0
+    skill_dirs = sorted(p for p in SKILLS.iterdir() if p.is_dir())
 
-    for d in sorted(p for p in SKILLS.iterdir() if p.is_dir()):
+    # Agent Skills structural checks retained from v0.4.
+    for d in skill_dirs:
         count += 1
         if d.name in EXCLUDED_SKILLS:
             errors.append(f"{d.name}: solver-control skill is excluded from Research-Core")
@@ -72,13 +92,23 @@ def main():
             if f"${d.name}" not in agent_text:
                 warnings.append(f"{d.name}: default prompt does not explicitly cite ${d.name}")
 
-    registry = (ROOT / "registry.yaml").read_text(encoding="utf-8")
-    if 'version: "0.4.0"' not in registry:
-        errors.append("registry.yaml: expected version 0.4.0")
-    for d in sorted(p for p in SKILLS.iterdir() if p.is_dir()):
-        if f"name: {d.name}" not in registry:
-            errors.append(f"registry.yaml: missing {d.name}")
+    # Registry must be exact: no missing or stale skills.
+    registry_file = ROOT / "registry.yaml"
+    if not registry_file.exists():
+        errors.append("registry.yaml is required")
+        registry = ""
+    else:
+        registry = registry_file.read_text(encoding="utf-8")
+        if f'version: "{VERSION}"' not in registry:
+            errors.append(f"registry.yaml: expected version {VERSION}")
+    registered = set(re.findall(r"(?m)^\s*- name:\s*([a-z0-9-]+)\s*$", registry))
+    actual = {d.name for d in skill_dirs}
+    for skill in sorted(actual - registered):
+        errors.append(f"registry.yaml: missing {skill}")
+    for skill in sorted(registered - actual):
+        errors.append(f"registry.yaml: stale entry {skill}")
 
+    # Preserve every v0.4 Research/Evidence/Quantitative-Core release requirement.
     core_requirements = {
         "geotech-paper-reader": ["references/paper-card-template.md", "references/extraction-confidence.md", "references/comparison-matrix.md"],
         "geotech-gap-novelty": ["references/novelty-framework.md", "references/saturation-test.md", "references/novelty-claims.md"],
@@ -94,36 +124,80 @@ def main():
         "geotech-parameter-calibration": ["references/identifiability.md", "references/calibration-validation.md", "references/residual-diagnostics.md", "references/model-comparison.md", "assets/calibration-manifest.example.json", "scripts/audit_calibration_manifest.py"],
         "geotech-unit-dimension-audit": ["references/dimension-rules.md", "references/geotech-unit-traps.md", "references/normalization.md", "assets/variable-register.example.json", "scripts/check_variable_register.py"],
     }
-    for skill, rels in core_requirements.items():
-        for rel in rels:
-            if not (SKILLS / skill / rel).exists():
-                errors.append(f"{skill}: v0.4 required file missing: {rel}")
 
+    # v0.5 is additive: citation requirements extend rather than replace v0.4 gates.
+    citation_requirements = {
+        "geotech-reference-verifier": [
+            "references/reference-status-taxonomy.md", "references/reference-record-schema.md",
+            "references/verification-evidence.md", "references/online-resolver.md",
+            "references/batch-forensics.md", "assets/reference-record.example.json",
+            "scripts/audit_reference_record.py", "scripts/resolve_reference.py",
+            "scripts/audit_references.py",
+        ],
+        "geotech-citation-fidelity": ["references/fidelity-ladder.md", "references/mismatch-taxonomy.md", "references/citation-instance-schema.md", "assets/citation-map.example.json", "scripts/audit_citation_map.py"],
+        "geotech-bibliography-audit": ["references/bibliography-integrity.md", "references/duplicate-resolution.md", "references/citation-key-rules.md", "scripts/audit_bib_consistency.py"],
+        "geotech-reference-format": ["references/metadata-vs-style.md", "references/csl-pipeline.md", "references/geotechnical-journal-checklist.md", "assets/render-manifest.example.json", "scripts/check_render_manifest.py"],
+    }
+
+    for release_name, requirements in (("v0.4", core_requirements), ("v0.5", citation_requirements)):
+        for skill, rels in requirements.items():
+            if not (SKILLS / skill).is_dir():
+                errors.append(f"{skill}: {release_name} required skill missing")
+                continue
+            for rel in rels:
+                if not (SKILLS / skill / rel).exists():
+                    errors.append(f"{skill}: {release_name} required file missing: {rel}")
+
+    # Preserve v0.4 routing regression tests.
     trigger_file = ROOT / "tests" / "trigger_cases.yaml"
     if not trigger_file.exists():
         errors.append("tests/trigger_cases.yaml is required")
     else:
         trigger_text = trigger_file.read_text(encoding="utf-8")
-        focus = [
-            "geotech-paper-reader", "geotech-gap-novelty", "geotech-theory-derivation",
-            "geotech-result-to-claim", "geotech-pre-submission-reviewer",
-            "geotech-literature-review", "geotech-evidence-ledger", "geotech-paper-spine",
-            "geotech-experiment-design", "geotech-data-qc", "geotech-statistics",
-            "geotech-parameter-calibration", "geotech-unit-dimension-audit",
-        ]
-        for skill in focus:
-            if f"skill: {skill}" not in trigger_text:
+        for skill in core_requirements:
+            if not has_skill_trigger(trigger_text, skill):
                 errors.append(f"trigger_cases.yaml: missing trigger case for {skill}")
 
-    # Execute lightweight deterministic smoke tests.
-    tests = [
-        [sys.executable, str(ROOT / "tests" / "test_evidence_graph.py")],
-        [sys.executable, str(ROOT / "tests" / "test_quantitative_core.py")],
+    # Add v0.5 citation routing regression tests.
+    citation_trigger_file = ROOT / "tests" / "citation_trigger_cases.yaml"
+    if not citation_trigger_file.exists():
+        errors.append("tests/citation_trigger_cases.yaml is required")
+    else:
+        citation_trigger_text = citation_trigger_file.read_text(encoding="utf-8")
+        if f'version: "{VERSION}"' not in citation_trigger_text:
+            errors.append(f"citation_trigger_cases.yaml: expected version {VERSION}")
+        for skill in citation_requirements:
+            if not has_skill_trigger(citation_trigger_text, skill):
+                errors.append(f"citation_trigger_cases.yaml: missing trigger case for {skill}")
+
+    required_files = [
+        ROOT / "docs" / "citation-integrity-core.md",
+        ROOT / "examples" / "citation-integrity-workflow.md",
+        ROOT / "tests" / "test_citation_integrity.py",
+        ROOT / "tests" / "test_reference_resolver.py",
+        ROOT / "tests" / "test_batch_reference_forensics.py",
+        ROOT / "tests" / "fixtures" / "reference-batch" / "references.bib",
+        SKILLS / "geotech-evidence-ledger" / "assets" / "citation-evidence-graph.example.json",
     ]
-    for cmd in tests:
-        proc = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True)
+    for p in required_files:
+        if not p.exists():
+            errors.append(f"v0.5 required file missing: {p.relative_to(ROOT)}")
+
+    # Execute all deterministic smoke/negative tests from previous releases plus v0.5.
+    tests = [
+        ROOT / "tests" / "test_evidence_graph.py",
+        ROOT / "tests" / "test_quantitative_core.py",
+        ROOT / "tests" / "test_citation_integrity.py",
+        ROOT / "tests" / "test_reference_resolver.py",
+        ROOT / "tests" / "test_batch_reference_forensics.py",
+    ]
+    for path in tests:
+        if not path.exists():
+            errors.append(f"missing smoke test: {path.relative_to(ROOT)}")
+            continue
+        proc = run_test(path)
         if proc.returncode != 0:
-            errors.append(f"smoke test failed: {' '.join(cmd)}\n{proc.stdout}\n{proc.stderr}")
+            errors.append(f"smoke test failed: {path.relative_to(ROOT)}\n{proc.stdout}\n{proc.stderr}")
 
     for w in warnings:
         print("WARNING:", w)
@@ -133,6 +207,7 @@ def main():
         return 1
     print(f"Validated {count} skills (v{VERSION})")
     return 0
+
 
 if __name__ == "__main__":
     raise SystemExit(main())

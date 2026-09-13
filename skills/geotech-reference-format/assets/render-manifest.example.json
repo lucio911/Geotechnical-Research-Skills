@@ -1,0 +1,10 @@
+{
+  "target_journal": "Computers and Geotechnics",
+  "style_id": "journal-csl-id-or-local-style",
+  "locale": "en-US",
+  "processor": "citeproc-compatible",
+  "metadata_source": "references.canonical.json",
+  "rendered_output": "references.formatted.txt",
+  "identity_verified": true,
+  "style_verified_against_journal_instructions": false
+}

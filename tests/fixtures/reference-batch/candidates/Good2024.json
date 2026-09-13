@@ -1,0 +1,13 @@
+{
+  "candidates": [
+    {
+      "source": "crossref",
+      "doi": "10.1234/good",
+      "title": "Cyclic response of pile-sand interfaces under repeated loading",
+      "authors": ["Xiaoming Li", "Yu Wang"],
+      "year": 2024,
+      "venue": "Computers and Geotechnics",
+      "is_retracted": false
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "project": {
+    "id": "citation-integrity-example",
+    "version": "0.5.0"
+  },
+  "nodes": [
+    {
+      "id": "SRC-012",
+      "type": "source",
+      "label": "Verified cyclic interface study",
+      "role": "mechanism-support",
+      "status": "active"
+    },
+    {
+      "id": "CIT-063",
+      "type": "citation",
+      "label": "Discussion citation instance",
+      "status": "provisional",
+      "location": "Discussion 5.1 para 2"
+    },
+    {
+      "id": "CLM-031",
+      "type": "claim",
+      "label": "Particle breakage contributes to cyclic stiffness degradation",
+      "status": "active",
+      "confidence": "medium"
+    },
+    {
+      "id": "BND-004",
+      "type": "boundary",
+      "label": "Applies to tested material, stress state and cyclic loading range"
+    },
+    {
+      "id": "SEC-005",
+      "type": "section",
+      "label": "Discussion 5.1"
+    }
+  ],
+  "edges": [
+    {
+      "from": "SRC-012",
+      "to": "CIT-063",
+      "relation": "cited_as"
+    },
+    {
+      "from": "CIT-063",
+      "to": "CLM-031",
+      "relation": "supports",
+      "evidence_grade": "E2",
+      "fidelity_grade": "F3",
+      "scope": "qualitative contribution, not exclusive governing causality"
+    },
+    {
+      "from": "CIT-063",
+      "to": "SEC-005",
+      "relation": "reported_in"
+    },
+    {
+      "from": "BND-004",
+      "to": "CLM-031",
+      "relation": "bounds"
+    }
+  ]
+}

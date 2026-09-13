@@ -1,5 +1,42 @@
 # Changelog
 
+## v0.5.0 — Citation Integrity Core
+
+### Added
+
+- `geotech-reference-verifier` for reference existence, identity, metadata, identifier, duplicate/composite, and publication-status auditing.
+- `geotech-citation-fidelity` with `CIT-###` citation instances and F0–F5 support grades.
+- `geotech-bibliography-audit` for dangling/orphan citations, duplicate identifiers/titles, and citekey consistency.
+- `geotech-reference-format` for metadata-preserving deterministic CSL-oriented rendering.
+- Citation Integrity Core documentation, worked example, deterministic helper scripts, trigger fixtures, and negative tests.
+- `CIT` Evidence Graph node type, `cited_as` relation, and citation-to-claim `fidelity_grade` separate from E0–E5 evidence strength.
+- Online reference resolver using Crossref/DataCite public metadata, optional OpenAlex cross-checking, provenance capture, and deterministic identity scoring.
+- Offline resolver fixtures for matched identity, DOI-to-wrong-work mismatch, and unresolved/no-hit behavior.
+- Whole-bibliography `audit_references.py` for BibTeX parsing, cached batch resolution, duplicate DOI detection, near-duplicate title screening, retraction flags, and JSON/Markdown integrity reports.
+- Batch fixtures covering `Family, Given` BibTeX author normalization, duplicate DOI records, identifier mismatch, and unresolved references.
+
+### Integrity changes
+
+- `NOT FOUND` is explicitly not equivalent to `FABRICATED`.
+- `FABRICATED_CONFIRMED` requires explicit human review in the deterministic record audit.
+- DOI/identifier resolution alone is insufficient: the resolved work identity must match the manuscript record.
+- Real references are audited separately for whether they support the exact manuscript proposition where cited.
+- The same verified `SRC` may have multiple `CIT` instances with different fidelity grades.
+- Formatting is downstream of metadata verification and must not invent missing bibliographic fields.
+- Reference style rendering is designed around canonical metadata plus deterministic CSL/bibliography processors rather than LLM-guessed punctuation.
+- API/network failure is treated as an evidence gap; the online resolver cannot automatically emit `FABRICATED_CONFIRMED`.
+- `UNRESOLVED` and `AMBIGUOUS` remain review states in batch mode; neither is automatically promoted to fabrication.
+- Duplicate DOI and near-duplicate title findings are screening flags, not automatic deletion decisions.
+
+### Validation
+
+- Repository validator retains all prior Research/Evidence/Quantitative-Core gates and adds Citation-Core gates rather than replacing earlier checks.
+- Added negative fixtures for fabricated-reference confirmation without human review, dangling citekeys, orphan bibliography entries, and weak citation support.
+- GitHub Actions validates all 21 skills and all five repository smoke/regression suites through `scripts/validate_repo.py`.
+- GitHub Actions additionally runs `tests/test_reference_resolver.py` without network access to verify identity scoring and conservative failure behavior.
+- GitHub Actions additionally runs `tests/test_batch_reference_forensics.py` to verify whole-bibliography parsing, duplicate detection, mismatch handling, unresolved-policy preservation, and `--fail-on-critical` behavior.
+- The batch regression fixture is expected to yield two verified duplicate representations, one identifier mismatch, and one unresolved item without any automatic fabrication verdict.
+
 ## v0.4.0 — Experimental & Quantitative Research Core
 
 ### Added
@@ -32,6 +69,7 @@
 - calibration fit is not validation;
 - extra model parameters must earn complexity through identifiability, physical necessity, or independent prediction;
 - normalized variables and exponential/log arguments require explicit dimensional/reference-state interpretation.
+
 
 ## v0.3.0 — Evidence Architecture
 

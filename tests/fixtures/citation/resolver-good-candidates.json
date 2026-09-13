@@ -1,0 +1,20 @@
+{
+  "candidates": [
+    {
+      "source": "crossref",
+      "source_url": "fixture://crossref/10.1038/nature12373",
+      "doi": "10.1038/nature12373",
+      "title": "Nanometre-scale thermometry in a living cell",
+      "authors": ["G. Kucsko", "P. C. Maurer", "N. Y. Yao", "M. Kubo", "H. J. Noh"],
+      "year": 2013,
+      "venue": "Nature",
+      "publisher": "Springer Science and Business Media LLC",
+      "volume": "500",
+      "issue": "7460",
+      "pages": "54-58",
+      "type": "journal-article",
+      "url": "https://doi.org/10.1038/nature12373",
+      "is_retracted": false
+    }
+  ]
+}

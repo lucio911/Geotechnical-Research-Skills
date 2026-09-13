@@ -1,6 +1,6 @@
-version: "0.4.0"
+version: "0.5.0"
 project: geotechnical-research-skills
-focus: experimental-quantitative-core
+focus: citation-integrity-core
 skills:
   - name: geotech-router
     pack: core
@@ -10,6 +10,16 @@ skills:
     pack: evidence-core
   - name: geotech-literature-review
     pack: evidence-core
+  - name: geotech-paper-spine
+    pack: evidence-core
+  - name: geotech-reference-verifier
+    pack: citation-core
+  - name: geotech-citation-fidelity
+    pack: citation-core
+  - name: geotech-bibliography-audit
+    pack: citation-core
+  - name: geotech-reference-format
+    pack: citation-core
   - name: geotech-paper-reader
     pack: research-core
   - name: geotech-gap-novelty
@@ -32,8 +42,6 @@ skills:
     pack: research-core
   - name: geotech-scientific-figure
     pack: communication
-  - name: geotech-paper-spine
-    pack: evidence-core
   - name: geotech-pre-submission-reviewer
     pack: research-core
 roadmap:

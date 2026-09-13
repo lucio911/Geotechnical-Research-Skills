@@ -1,0 +1,4 @@
+interface:
+  display_name: Geotech Bibliography Audit
+  short_description: Audit body citations against bibliography records
+  default_prompt: Use $geotech-bibliography-audit to find dangling citations, orphan references, duplicate works, duplicate identifiers, and citekey inconsistencies in this manuscript.

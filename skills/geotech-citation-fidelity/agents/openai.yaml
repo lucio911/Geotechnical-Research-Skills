@@ -1,0 +1,4 @@
+interface:
+  display_name: Geotech Citation Fidelity
+  short_description: Check whether sources support exact manuscript claims
+  default_prompt: Use $geotech-citation-fidelity to audit each citation instance against the exact claim it is used to support and grade fidelity F0-F5.

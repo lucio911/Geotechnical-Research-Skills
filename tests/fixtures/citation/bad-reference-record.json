@@ -1,0 +1,15 @@
+{
+  "reference_id": "SRC-999",
+  "original": {
+    "title": "Invented paper",
+    "doi": "10.9999/fake"
+  },
+  "resolved": {},
+  "checks": {
+    "identifier_resolves": false,
+    "identity_match": false
+  },
+  "verdict": "FABRICATED_CONFIRMED",
+  "confidence": "high",
+  "human_review": false
+}
