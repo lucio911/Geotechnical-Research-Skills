@@ -63,3 +63,7 @@ Prefer explicit objects:
 ## Negative routing
 
 Do not route software installation, GUI clicking, solver scripting, job submission, or generic programming debugging into Research-Core unless the actual question is scientific model design, verification, inference, or evidence quality.
+
+## Stop condition
+
+Stop routing once the minimum defensible skill sequence, dependencies, and handoff objects have been identified. Do not execute specialist analysis merely because it appears in the route unless the user requested that downstream work.
