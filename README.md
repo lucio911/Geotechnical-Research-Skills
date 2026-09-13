@@ -1,263 +1,244 @@
 # Geotechnical-Research-Skills
 
-Research-reasoning Agent Skills for evidence-grounded, mechanics-aware, and quantitatively defensible geotechnical engineering.
+[![validate-skills](https://github.com/lucio911/Geotechnical-Research-Skills/actions/workflows/validate.yml/badge.svg)](https://github.com/lucio911/Geotechnical-Research-Skills/actions/workflows/validate.yml)
 
-> **Status:** Experimental  
-> **Current version:** v0.4.0 — Experimental & Quantitative Research Core
+Research-reasoning Agent Skills for evidence-grounded, mechanics-aware, quantitatively defensible geotechnical engineering.
 
-## What this project is
+> Status: **v0.4.0 Experimental & Quantitative Research Core**. This release extends the v0.3 Evidence Architecture upstream into experiment design, raw-data QC, statistical inference, parameter calibration, and unit/dimension control. The suite remains software-agnostic: no solver-control or GUI automation skills are part of Research-Core.
 
-Geotechnical-Research-Skills is a modular Agent Skills suite designed for researchers in geotechnical engineering. The project focuses on scientific reasoning rather than software automation.
+## Why this project exists
 
-The central principle is simple:
+Generic academic agents can produce fluent prose while missing scientific failure modes that matter in geotechnical research:
 
-> AI should not merely help write geotechnical papers. It should make unsupported geotechnical claims harder to produce.
+- parameter variation presented as scientific novelty;
+- uncontrolled density, saturation, stress history, drainage, sequence, or scale effects;
+- repeated cycles or time points counted as independent replication;
+- raw data overwritten or exclusions undocumented;
+- sensor drift, seating, saturation, synchronization, or derived-variable definitions ignored;
+- p-values treated as engineering importance;
+- R² treated as model adequacy;
+- fitted parameters that are not identifiable;
+- calibration against the fitting data renamed as validation;
+- normalized variables whose reference states silently change;
+- dimensioned quantities placed inside exponential/logarithmic functions without normalization;
+- effective-stress, total-stress, sign, degree/radian, kPa/MPa, mm/m, or percent/fraction ambiguity;
+- contour plots treated as quantitative proof;
+- association promoted to mechanism or causality without discriminating evidence;
+- conclusions broader than tested material, stress path, geometry, scale, or loading range.
 
-The suite connects literature evidence, mechanics, experimental design, quantitative inference, model calibration, figures, claims, and manuscript structure through explicit handoff objects and an auditable Evidence Graph.
+The canonical chain is now:
 
-## What this project is not
+`Question -> Gap -> Hypothesis -> Experiment/Method -> Data -> QC -> Analysis/Calibration -> Result -> Mechanics -> Claim -> Figure -> Paper -> Adversarial Review`
 
-This project is **not** an Abaqus/PLAXIS/FLAC3D GUI copilot, solver automation framework, or generic prompt collection.
+## Scope boundary
 
-It intentionally avoids binding the research core to any one numerical package. Numerical results are treated as one evidence source among experiments, theory, field observations, literature, and standards.
+This repository is intentionally **software-agnostic**. It may reason about numerical study design and verification, but it does not attempt to become an Abaqus, PLAXIS, FLAC3D, OpenSees, MATLAB, Python, R, or spreadsheet copilot.
 
-## Current Skills
+Research-Core should remain scientifically valid regardless of whether evidence comes from laboratory tests, field monitoring, numerical analysis, analytical derivation, probabilistic analysis, or literature.
 
-### Research-Core
+## v0.4 skill map
 
-- `geotech-paper-reader`
-- `geotech-gap-novelty`
-- `geotech-theory-derivation`
-- `geotech-result-to-claim`
-- `geotech-pre-submission-reviewer`
-- `geotech-literature-review`
-- `geotech-evidence-ledger`
-- `geotech-paper-spine`
+| Skill | Pack | Role |
+|---|---|---|
+| `geotech-router` | core | Route the smallest defensible workflow |
+| `geotech-project-ledger` | core | Maintain project truth and provenance |
+| `geotech-evidence-ledger` | evidence-core | Build/audit the typed Evidence Graph |
+| `geotech-literature-review` | evidence-core | Evidence-oriented literature synthesis and contradiction mapping |
+| `geotech-paper-spine` | evidence-core | Main/supporting/boundary claim architecture and figure roles |
+| `geotech-paper-reader` | research-core | Auditable Geotechnical Paper Cards |
+| `geotech-gap-novelty` | research-core | Stress-test real novelty rather than parameter novelty |
+| `geotech-theory-derivation` | research-core | Theory/model derivation and state-variable audit |
+| `geotech-result-to-claim` | research-core | Control evidence-to-claim strength |
+| `geotech-pre-submission-reviewer` | research-core | Adversarial multi-role review |
+| `geotech-experiment-design` | quantitative-core | Hypothesis-driven test design, controls, replication, confounding, scale effects |
+| `geotech-data-qc` | quantitative-core | Raw-data provenance, sensor/table QC, exclusions and preprocessing audit |
+| `geotech-statistics` | quantitative-core | Experimental unit, repeated measures, uncertainty, effect size and inference |
+| `geotech-parameter-calibration` | quantitative-core | Identifiability, objective functions, model comparison and independent validation |
+| `geotech-unit-dimension-audit` | quantitative-core | Units, dimensions, normalization, sign/stress conventions and reference states |
+| `geotech-numerical-planner` | methods | Solver-agnostic numerical study/verification planning |
+| `geotech-scientific-figure` | communication | Evidence-driven scientific figure architecture |
 
-### Quantitative-Core
+## What changed in v0.4
 
-- `geotech-experiment-design`
-- `geotech-data-qc`
-- `geotech-statistics`
-- `geotech-parameter-calibration`
-- `geotech-unit-dimension-audit`
+### 1. Experiment design became claim-discrimination design
 
-### Supporting Skills
+`geotech-experiment-design` does not start from the number of test cases. It starts from:
 
-- `geotech-router`
-- `geotech-project-ledger`
-- `geotech-numerical-planner`
-- `geotech-scientific-figure`
+`claim -> primary hypothesis -> credible alternative -> controlled contrast -> observable -> decision rule`
 
-Total: **17 skills**.
+It explicitly audits material state, effective/total stress, drainage, loading sequence, model scale, apparatus boundaries, true replication, pseudo-replication, and measurement resolution.
 
-## Architecture
+### 2. Data quality became part of provenance
 
-```text
-Research Question
-      ↓
-Literature Review
-      ↓
-Gap & Novelty
-      ↓
-Experiment / Study Design
-      ↓
-Data QC
-      ↓
-Statistics / Parameter Calibration / Theory
-      ↓
-Result-to-Claim Audit
-      ↓
-Evidence Graph
-      ↓
-Paper Spine + Figure Architecture
-      ↓
-Pre-submission Adversarial Review
+`geotech-data-qc` uses an immutable chain:
+
+`raw -> processed -> analysis-ready`
+
+Every exclusion and transformation must be recorded. Cyclic tests receive dedicated checks for seating, amplitude/mean drift, cycle segmentation, incomplete loops, phase/synchronization errors, and first-cycle reference definitions.
+
+A lightweight structural checker is included:
+
+```bash
+python skills/geotech-data-qc/scripts/audit_csv.py data.csv --time-column time
 ```
 
-The quantitative research chain is represented explicitly:
+Passing it does not establish sensor or scientific validity.
 
-```text
-MTH → DAT → QC → ANA → RES → CLM
-              └→ PAR → validation → RES → CLM
+### 3. Statistics now begins with the experimental unit
+
+`geotech-statistics` forces the distinction between specimens and repeated observations. One specimen with 100 cycles is not `n = 100` independent specimens.
+
+The inference ladder is:
+
+`description -> uncertainty -> contrast -> association -> prediction -> mechanism`
+
+Statistical significance and engineering significance are reported separately.
+
+### 4. Calibration now has an identifiability and leakage gate
+
+`geotech-parameter-calibration` requires:
+
+- explicit parameter meaning, units, bounds, and sensitivity;
+- objective-function definition;
+- repeated-start / sensitivity / parameter-correlation checks where relevant;
+- residual diagnostics;
+- reduced-versus-full model comparison;
+- independent validation where predictive claims are made;
+- no calibration/validation case overlap.
+
+For models such as `G/G0 = F(rp, Br)` where `Br = h(rp)`, the skill explicitly tests information overlap and whether the extra state variable improves independent prediction.
+
+Audit a calibration manifest:
+
+```bash
+python skills/geotech-parameter-calibration/scripts/audit_calibration_manifest.py \
+  skills/geotech-parameter-calibration/assets/calibration-manifest.example.json
 ```
 
-where:
+### 5. Unit/dimension control became a first-class gate
 
-- `MTH` = method;
-- `DAT` = dataset;
-- `QC` = quality-control record;
-- `ANA` = analysis;
-- `PAR` = calibrated parameter set;
-- `RES` = result;
-- `CLM` = scientific claim.
+`geotech-unit-dimension-audit` checks equations, tables, plots, and parameter definitions. It specifically guards against:
 
-## Evidence Graph
+- `exp(-c x)` with dimensioned `c x`;
+- Pa/kPa/MPa and N/kN drift;
+- mm/m and decimal/percent strain drift;
+- density versus unit weight;
+- effective versus total stress;
+- degree/radian ambiguity;
+- normalized variables whose reference state is undefined;
+- fitted constants silently carrying units while being called dimensionless.
 
-The Evidence Graph uses stable IDs rather than relying on manuscript paragraph numbers.
+Audit a variable register:
 
-Supported research objects include:
-
-```text
-RQ-###   research question
-GAP-###  gap
-HYP-###  hypothesis
-MTH-###  method
-DAT-###  dataset
-QC-###   quality-control record
-ANA-###  analysis
-PAR-###  parameter set
-RES-###  result
-SRC-###  source / standard
-MEC-###  mechanism
-CLM-###  claim
-BND-###  applicability boundary
-FIG-###  figure
-SEC-###  manuscript section
-CON-###  conclusion
-DEC-###  research decision
+```bash
+python skills/geotech-unit-dimension-audit/scripts/check_variable_register.py \
+  skills/geotech-unit-dimension-audit/assets/variable-register.example.json
 ```
 
-This allows a conclusion to be traced upstream, for example:
+## v0.4 Evidence Graph extension
+
+v0.3 used a core chain such as `MTH -> DAT -> RES -> CLM`. v0.4 adds explicit quantitative objects:
+
+- `QC-###` — data-quality assessment;
+- `ANA-###` — statistical/calibration/quantitative analysis;
+- `PAR-###` — parameter set.
+
+Recommended experimental chain:
 
 ```text
-CON-002
-  ← CLM-005
-      ← RES-014
-          ← ANA-004
-              ← QC-003
-                  ← DAT-006
-                      ← MTH-003
+MTH -> DAT -> QC
+        |      |
+        v      v
+       ANA <---+
+        |
+        +----> RES -> CLM
+        |
+        +----> PAR
 ```
 
-A deterministic graph validator can detect broken provenance chains, unsupported conclusions, orphan results, invalid edges, and selected circular dependencies.
-
-## v0.4 focus: Experimental & Quantitative Research Core
-
-### 1. Experiment design
-
-`geotech-experiment-design` starts from claims and competing hypotheses rather than test matrices.
-
-It asks whether changes attributed to a target factor may instead reflect:
-
-- relative density or void ratio;
-- water content/saturation;
-- OCR or stress history;
-- drainage condition;
-- loading sequence and prior cyclic history;
-- specimen preparation;
-- scale or boundary effects;
-- particle-size effects;
-- apparatus compliance;
-- sensor seating or reference drift.
-
-A test programme must define experimental units, replication, controls, measured responses, decision criteria, and applicability limits.
-
-### 2. Data QC
-
-`geotech-data-qc` follows an immutable provenance model:
+For calibrated models with independent validation:
 
 ```text
-raw
- ↓
-processed
- ↓
-analysis-ready
+DAT(calibration) -> QC -> ANA(calibration) -> PAR
+                                             |
+                                             v
+DAT(validation)  -> QC -> ANA(validation) -> RES(validation)
+                         ^                   |
+                         |                   +---- validates ---> PAR
+                         +---- parameterizes-+
+
+RES(validation) -> CLM
 ```
 
-Raw observations must not be overwritten. Exclusions, smoothing, normalization, synchronization, zero correction, interpolation, and filtering require explicit provenance.
+New graph relations include `assessed_by`, `analyzed_by`, `qualifies`, `estimates`, `parameterizes`, and `validates`.
 
-The included `audit_csv.py` provides deterministic structural checks such as missing values, duplicate rows, non-monotonic time, and constant numeric channels. Passing structural checks is **not** equivalent to passing scientific sensor QC.
+Example:
 
-### 3. Statistics
+```bash
+python skills/geotech-evidence-ledger/scripts/validate_evidence_graph.py \
+  skills/geotech-evidence-ledger/assets/quantitative-evidence-graph.example.json
+```
 
-`geotech-statistics` identifies the experimental unit before selecting a statistical method.
-
-One specimen measured over 100 cycles does **not** automatically mean `n = 100`. The skill distinguishes independent replication from repeated measures and separates statistical significance from engineering significance.
-
-### 4. Parameter calibration
-
-`geotech-parameter-calibration` treats fitting as a model-identification problem rather than curve decoration.
-
-It audits:
-
-- parameter meaning and bounds;
-- objective functions and weighting;
-- identifiability and parameter compensation;
-- multi-start stability;
-- residual structure;
-- reduced versus full models;
-- calibration/validation leakage;
-- independent predictive performance;
-- uncertainty and extrapolation boundaries.
-
-The included manifest checker can catch explicit train/validation case overlap and selected parameter/bound errors.
-
-### 5. Units and dimensions
-
-`geotech-unit-dimension-audit` checks dimensional consistency, normalization, reference states, stress/sign conventions, and common geotechnical unit traps.
-
-For example, a formulation such as
+## Recommended project state
 
 ```text
-exp(-λ r_p)
+.geotech/
+├── project_truth.md
+├── research_questions.md
+├── literature_matrix.md
+├── experiment_register.md
+├── method_register.md
+├── parameter_register.md
+├── variable_unit_register.json
+├── qc_register.md
+├── analysis_register.md
+├── result_ledger.md
+├── evidence_graph.json
+├── manuscript_spine.md
+├── figure_map.md
+├── review_matrix.md
+└── decision_log.md
 ```
 
-requires the exponent to be dimensionless. If `r_p` is measured in mm, then `λ` cannot simultaneously be called a dimensionless parameter without an explicit normalization.
+## Recommended routes
 
-## Research-Core highlights
+### Experimental study
 
-### Gap & Novelty
+`geotech-experiment-design -> geotech-data-qc -> geotech-unit-dimension-audit -> geotech-statistics / geotech-parameter-calibration -> geotech-result-to-claim -> geotech-evidence-ledger -> geotech-paper-spine`
 
-The suite rejects novelty claims based only on changing soil type, geometry, software, or parameter ranges. Novelty is stress-tested at phenomenon, mechanism, method, evidence, predictive, and engineering-capability levels.
+### Degradation/constitutive model development
 
-### Theory derivation
+`geotech-gap-novelty -> geotech-unit-dimension-audit -> geotech-theory-derivation -> geotech-parameter-calibration -> geotech-statistics -> geotech-result-to-claim -> geotech-evidence-ledger`
 
-Models are audited for assumptions, state variables, closure, dimensions, limiting cases, identifiability, calibration, validation, and classification.
+### Existing dataset audit
 
-A model using both `r_p` and `B_r` is explicitly checked for information overlap when `B_r = h(r_p)`.
+`geotech-data-qc -> geotech-unit-dimension-audit -> geotech-statistics -> geotech-result-to-claim`
 
-### Result to Claim
+### Literature and novelty
 
-Evidence and claims are separated by level. Association is not silently upgraded into governing mechanism or causality.
+`geotech-literature-review -> geotech-paper-reader -> geotech-gap-novelty -> geotech-evidence-ledger`
 
-### Pre-submission review
+### Numerical study
 
-Independent reviewer roles examine mechanics, experiment/measurement, numerical evidence, statistics, novelty/evidence, and rejection-level vulnerabilities before an editor synthesis.
+`geotech-numerical-planner -> geotech-unit-dimension-audit -> geotech-result-to-claim -> geotech-evidence-ledger -> geotech-pre-submission-reviewer`
 
-## Repository layout
+### Manuscript repair
 
-```text
-Geotechnical-Research-Skills/
-├── README.md
-├── AGENTS.md
-├── CHANGELOG.md
-├── CONTRIBUTING.md
-├── LICENSE
-├── registry.yaml
-├── docs/
-├── examples/
-├── scripts/
-├── tests/
-└── skills/
-    ├── geotech-router/
-    ├── geotech-project-ledger/
-    ├── geotech-evidence-ledger/
-    ├── geotech-literature-review/
-    ├── geotech-paper-reader/
-    ├── geotech-gap-novelty/
-    ├── geotech-theory-derivation/
-    ├── geotech-numerical-planner/
-    ├── geotech-result-to-claim/
-    ├── geotech-scientific-figure/
-    ├── geotech-paper-spine/
-    ├── geotech-pre-submission-reviewer/
-    ├── geotech-experiment-design/
-    ├── geotech-data-qc/
-    ├── geotech-statistics/
-    ├── geotech-parameter-calibration/
-    └── geotech-unit-dimension-audit/
-```
+`geotech-paper-spine -> geotech-evidence-ledger -> geotech-result-to-claim -> geotech-gap-novelty -> geotech-pre-submission-reviewer`
+
+## Scientific integrity doctrine
+
+A downstream analysis cannot repair a failed upstream design or provenance gate.
+
+For consequential quantitative claims seek:
+
+`claim -> result -> analysis -> QC -> dataset -> method/design -> conditions -> uncertainty -> alternatives -> boundary`
+
+For calibrated predictive claims also require:
+
+`parameter set -> calibration provenance + independent validation result`
+
+If a link is missing, weaken the wording, label the claim provisional, obtain additional evidence, or remove the claim.
 
 ## Validation
 
@@ -267,68 +248,12 @@ Run:
 python scripts/validate_repo.py
 ```
 
-The validator checks Agent Skill structure, declared reference files, registry coverage, Research-Core/Quantitative-Core required assets, helper-script smoke tests, and Evidence Graph examples.
+The validator checks the 17 skills, trigger fixtures, Evidence Graph schemas/examples, quantitative helper scripts, and example calibration/unit manifests.
 
-Additional tests:
+## Roadmap
 
-```bash
-python tests/test_evidence_graph.py
-python tests/test_quantitative_core.py
-```
-
-## Agent Skills compatibility
-
-Each skill uses:
-
-```text
-skills/<skill-name>/SKILL.md
-```
-
-with YAML frontmatter and progressive disclosure. Detailed taxonomies and templates are stored under `references/`; deterministic utilities are placed under `scripts/`; OpenAI/Codex UI metadata is stored under `agents/openai.yaml`.
-
-## Suggested usage
-
-Use the router or invoke skills explicitly in Agent-Skills-compatible environments.
-
-Examples:
-
-```text
-Use geotech-paper-reader to extract an auditable Paper Card from these papers.
-
-Use geotech-gap-novelty to stress-test whether this tunnel study is genuinely novel.
-
-Use geotech-experiment-design to test whether this cyclic loading programme can identify amplitude effects independently of loading history.
-
-Use geotech-parameter-calibration to audit this Br-rp-G/G0 model for parameter compensation and validation leakage.
-
-Use geotech-result-to-claim to audit whether these deformation contours and displacement curves support the stated mechanism.
-
-Use geotech-pre-submission-reviewer to identify rejection-level weaknesses in this manuscript.
-```
-
-## Installation
-
-For Codex/Agent-Skills-compatible systems, copy the relevant skill folders into your local skills directory or reference the repository from your agent configuration.
-
-Install only the skills needed for the current workflow where possible. Smaller active skill sets reduce routing ambiguity.
-
-## Design philosophy
-
-A good research agent should occasionally say:
-
-- the experiment cannot isolate the claimed mechanism;
-- the data quality is insufficient for the proposed inference;
-- the sample size is not the number of recorded cycles;
-- this is calibration, not validation;
-- this parameter is not identifiable from the available observations;
-- this quantity is dimensionally inconsistent;
-- this figure does not add independent evidence;
-- this mechanism is only one plausible interpretation;
-- this conclusion cannot be traced to evidence;
-- this novelty is only a parameter substitution.
-
-Those are features, not failures.
+**v0.5 candidate focus:** reliability and uncertainty reasoning, constitutive-model selection/audit, measurement uncertainty, standards/codes evidence handling, and reviewer-response traceability. Domain packs should add geotechnical ontology/checklists without duplicating core reasoning.
 
 ## License
 
-MIT.
+MIT. Third-party papers, standards, manuals, software, and datasets retain their own licenses and terms.
