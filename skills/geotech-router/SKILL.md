@@ -1,9 +1,9 @@
 ---
 name: geotech-router
-description: Route geotechnical research tasks to the smallest appropriate combination of literature, novelty, mechanics, experiment design, data QC, statistics, calibration, units, evidence-graph, figure, manuscript-spine, and review skills. Use when a request spans multiple research stages, the correct workflow is unclear, or a project needs end-to-end traceability from sources/results to claims and conclusions.
+description: Route geotechnical research tasks to the smallest appropriate combination of literature, novelty, mechanics, experiment design, data QC, statistics, calibration, units, evidence-graph, citation-integrity, figure, manuscript-spine, and review skills. Use when a request spans multiple research stages, the correct workflow is unclear, or a project needs end-to-end traceability from sources/results to claims and conclusions.
 license: MIT
 metadata:
-  version: "0.4.0"
+  version: "0.5.0"
   domain: geotechnical-engineering
 ---
 
@@ -32,7 +32,10 @@ Route research reasoning; do not become a specialist solver/tool controller.
 - New numerical study design -> `geotech-numerical-planner`; scientific outputs then -> `geotech-result-to-claim`.
 - Figure/result interpretation -> `geotech-result-to-claim` -> `geotech-evidence-ledger` -> `geotech-scientific-figure`.
 - Manuscript restructuring -> `geotech-paper-spine` using Claim/Figure IDs from `geotech-evidence-ledger`.
-- Pre-submission audit -> `geotech-paper-spine` -> `geotech-evidence-ledger` -> `geotech-pre-submission-reviewer`.
+- Reference-list integrity -> `geotech-bibliography-audit` -> `geotech-reference-verifier` for suspicious records.
+- Claim/citation audit -> `geotech-reference-verifier` -> `geotech-citation-fidelity` -> `geotech-evidence-ledger`.
+- Journal reference formatting -> verify identity first with `geotech-reference-verifier`, then `geotech-reference-format`.
+- Pre-submission audit -> `geotech-bibliography-audit` -> `geotech-citation-fidelity` for central claims -> `geotech-paper-spine` -> `geotech-evidence-ledger` -> `geotech-pre-submission-reviewer`.
 
 ## Handoff objects
 
@@ -51,7 +54,11 @@ Prefer explicit objects:
 - Data QC Record;
 - Statistical Analysis Card;
 - Calibration Manifest;
-- Variable/Unit Register.
+- Variable/Unit Register;
+- Reference Verification Record;
+- Citation Instance Map;
+- Bibliography Audit;
+- Render Manifest.
 
 ## Negative routing
 

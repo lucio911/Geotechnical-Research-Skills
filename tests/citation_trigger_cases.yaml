@@ -1,0 +1,26 @@
+version: "0.5.0"
+cases:
+  geotech-reference-verifier:
+    positive:
+      - "Check whether these 86 references actually exist and whether each DOI belongs to the title and authors shown."
+      - "This AI-generated bibliography looks suspicious. Find fabricated, composite, duplicate and misdirected references."
+    negative:
+      - "Format these already-verified references for Computers and Geotechnics."
+  geotech-citation-fidelity:
+    positive:
+      - "Does Zhang et al. actually support the claim that particle breakage governs cyclic degradation?"
+      - "Audit each Discussion citation and grade whether it directly supports the exact claim."
+    negative:
+      - "Check whether this DOI exists and matches the paper title."
+  geotech-bibliography-audit:
+    positive:
+      - "Compare manuscript citations with references.bib and find missing, unused and duplicate entries."
+      - "Find duplicate DOIs and unresolved citekeys after merging Zotero libraries."
+    negative:
+      - "Verify whether these references are fabricated using authoritative databases."
+  geotech-reference-format:
+    positive:
+      - "Format these verified references for Computers and Geotechnics using a deterministic CSL workflow."
+      - "Audit Chinese and English references against the target journal style without changing metadata."
+    negative:
+      - "Determine whether these AI-generated references are real."

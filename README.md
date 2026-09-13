@@ -4,7 +4,7 @@
 
 Research-reasoning Agent Skills for evidence-grounded, mechanics-aware, quantitatively defensible geotechnical engineering.
 
-> Status: **v0.4.0 Experimental & Quantitative Research Core**. This release extends the v0.3 Evidence Architecture upstream into experiment design, raw-data QC, statistical inference, parameter calibration, and unit/dimension control. The suite remains software-agnostic: no solver-control or GUI automation skills are part of Research-Core.
+> Status: **v0.5.0 Citation Integrity Core (feature-complete PR)**. This release adds reference identity verification, citation-to-claim fidelity auditing, manuscript/bibliography consistency checks, deterministic CSL-oriented reference formatting, and whole-bibliography reference forensics on top of the v0.4 quantitative core. The suite remains software-agnostic.
 
 ## Why this project exists
 
@@ -36,7 +36,7 @@ This repository is intentionally **software-agnostic**. It may reason about nume
 
 Research-Core should remain scientifically valid regardless of whether evidence comes from laboratory tests, field monitoring, numerical analysis, analytical derivation, probabilistic analysis, or literature.
 
-## v0.4 skill map
+## v0.5 skill map
 
 | Skill | Pack | Role |
 |---|---|---|
@@ -45,6 +45,10 @@ Research-Core should remain scientifically valid regardless of whether evidence 
 | `geotech-evidence-ledger` | evidence-core | Build/audit the typed Evidence Graph |
 | `geotech-literature-review` | evidence-core | Evidence-oriented literature synthesis and contradiction mapping |
 | `geotech-paper-spine` | evidence-core | Main/supporting/boundary claim architecture and figure roles |
+| `geotech-reference-verifier` | citation-core | Verify existence, identity, metadata drift, identifier mismatch, duplication and suspected fabrication |
+| `geotech-citation-fidelity` | citation-core | Audit whether each citation instance supports the exact manuscript claim (F0–F5) |
+| `geotech-bibliography-audit` | citation-core | Detect dangling/orphan citations, duplicate works/DOIs and citekey inconsistencies |
+| `geotech-reference-format` | citation-core | Render verified canonical metadata with deterministic journal/CSL style |
 | `geotech-paper-reader` | research-core | Auditable Geotechnical Paper Cards |
 | `geotech-gap-novelty` | research-core | Stress-test real novelty rather than parameter novelty |
 | `geotech-theory-derivation` | research-core | Theory/model derivation and state-variable audit |
@@ -58,7 +62,47 @@ Research-Core should remain scientifically valid regardless of whether evidence 
 | `geotech-numerical-planner` | methods | Solver-agnostic numerical study/verification planning |
 | `geotech-scientific-figure` | communication | Evidence-driven scientific figure architecture |
 
-## What changed in v0.4
+## What changed in v0.5
+
+### Citation integrity is now a separate evidence layer
+
+v0.5 separates five questions that should never be collapsed:
+
+`existence != identity != metadata != citation fidelity != formatting`
+
+- `geotech-reference-verifier` verifies that a reference exists and that persistent identifiers resolve to the same work claimed in the manuscript.
+- `geotech-citation-fidelity` introduces `CIT-###` citation instances and F0–F5 support grades.
+- `geotech-bibliography-audit` checks manuscript/body-to-bibliography structural consistency.
+- `geotech-reference-format` keeps metadata immutable and delegates rendering to deterministic CSL/bibliography processors.
+
+High-risk records such as `IDENTIFIER_MISMATCH`, `SUSPECTED_COMPOSITE`, and `SUSPECTED_FABRICATION` are never silently deleted.
+
+`geotech-reference-verifier` includes an executable online resolver:
+
+```bash
+python skills/geotech-reference-verifier/scripts/resolve_reference.py \
+  --record reference-record.json \
+  --email researcher@example.org \
+  --use-openalex
+```
+
+It uses Crossref/DataCite public metadata and optional OpenAlex cross-checking, but keeps retrieval separate from deterministic identity scoring. API failure or no hit remains `UNRESOLVED`, never automatic fabrication evidence.
+
+For whole-bibliography forensics:
+
+```bash
+python skills/geotech-reference-verifier/scripts/audit_references.py references.bib \
+  --email researcher@example.org \
+  --use-openalex \
+  --output-json reference-integrity-report.json \
+  --output-md reference-integrity-report.md
+```
+
+The batch audit uses a stateful BibTeX parser, cached per-reference resolution, duplicate DOI detection, conservative near-duplicate title screening, retraction flags, and aggregated critical/manual-review actions. `UNRESOLVED` and `AMBIGUOUS` remain review states rather than automatic fabrication findings. Use `--fail-on-critical` for a pre-submission/CI gate.
+
+See `docs/citation-integrity-core.md` and `examples/citation-integrity-workflow.md`.
+
+## v0.4 Quantitative Core retained
 
 ### 1. Experiment design became claim-discrimination design
 
@@ -135,7 +179,7 @@ python skills/geotech-unit-dimension-audit/scripts/check_variable_register.py \
   skills/geotech-unit-dimension-audit/assets/variable-register.example.json
 ```
 
-## v0.4 Evidence Graph extension
+## Evidence Graph extensions through v0.5
 
 v0.3 used a core chain such as `MTH -> DAT -> RES -> CLM`. v0.4 adds explicit quantitative objects:
 
@@ -151,26 +195,16 @@ MTH -> DAT -> QC
         v      v
        ANA <---+
         |
-        +----> RES -> CLM
+        +----> RES
         |
         +----> PAR
-```
-
-For calibrated models with independent validation:
-
-```text
-DAT(calibration) -> QC -> ANA(calibration) -> PAR
-                                             |
-                                             v
-DAT(validation)  -> QC -> ANA(validation) -> RES(validation)
-                         ^                   |
-                         |                   +---- validates ---> PAR
-                         +---- parameterizes-+
+                 |
+                 +---- parameterizes-+
 
 RES(validation) -> CLM
 ```
 
-New graph relations include `assessed_by`, `analyzed_by`, `qualifies`, `estimates`, `parameterizes`, and `validates`.
+v0.5 additionally introduces `CIT-###` citation-instance nodes and `cited_as` edges. Citation-to-claim edges may carry `fidelity_grade: F0`–`F5`, separate from evidence strength `E0`–`E5`.
 
 Example:
 
@@ -186,6 +220,8 @@ python skills/geotech-evidence-ledger/scripts/validate_evidence_graph.py \
 ├── project_truth.md
 ├── research_questions.md
 ├── literature_matrix.md
+├── reference_verification.json
+├── citation_map.json
 ├── experiment_register.md
 ├── method_register.md
 ├── parameter_register.md
@@ -218,42 +254,48 @@ python skills/geotech-evidence-ledger/scripts/validate_evidence_graph.py \
 
 `geotech-literature-review -> geotech-paper-reader -> geotech-gap-novelty -> geotech-evidence-ledger`
 
-### Numerical study
+### Reference and citation audit
 
-`geotech-numerical-planner -> geotech-unit-dimension-audit -> geotech-result-to-claim -> geotech-evidence-ledger -> geotech-pre-submission-reviewer`
+`geotech-bibliography-audit -> geotech-reference-verifier -> geotech-citation-fidelity -> geotech-reference-format -> geotech-evidence-ledger`
 
-### Manuscript repair
+## Research rules encoded in the repository
 
-`geotech-paper-spine -> geotech-evidence-ledger -> geotech-result-to-claim -> geotech-gap-novelty -> geotech-pre-submission-reviewer`
+1. Never fabricate citations, standards, data, equations, outputs, or validation evidence.
+2. Preserve measured, derived, calibrated, assumed, and cited values as different provenance classes.
+3. Preserve units, sign convention, stress measure, drainage, material state, load path, and scale.
+4. Repeated observations from one unit do not become independent replication by being numerous.
+5. Do not infer a mechanism from one correlated trend.
+6. A contour plot is qualitative unless a reproducible metric is extracted.
+7. Calibration is not independent validation.
+8. Statistical significance is not engineering significance.
+9. Extra parameters must be physically necessary, identifiable, or improve independent prediction.
+10. Exponential/logarithmic arguments must be dimensionless.
+11. A conclusion must not outrun the strongest support path in the Evidence Graph.
+12. A reference must be both real **and** appropriate for the exact claim where it is cited.
+13. `NOT FOUND` is not evidence of fabrication; unresolved or high-risk records require explicit review before deletion or replacement.
 
-## Scientific integrity doctrine
-
-A downstream analysis cannot repair a failed upstream design or provenance gate.
-
-For consequential quantitative claims seek:
-
-`claim -> result -> analysis -> QC -> dataset -> method/design -> conditions -> uncertainty -> alternatives -> boundary`
-
-For calibrated predictive claims also require:
-
-`parameter set -> calibration provenance + independent validation result`
-
-If a link is missing, weaken the wording, label the claim provisional, obtain additional evidence, or remove the claim.
-
-## Validation
-
-Run:
+## Local validation
 
 ```bash
 python scripts/validate_repo.py
 ```
 
-The validator checks the 17 skills, trigger fixtures, Evidence Graph schemas/examples, quantitative helper scripts, and example calibration/unit manifests.
+Current release gate covers 21 skills, all prior v0.2–v0.4 research/quantitative checks, Citation Integrity Core checks, Evidence Graph smoke tests, calibration/data/unit negative tests, single-reference resolver regression, and whole-bibliography forensic regression.
 
-## Roadmap
+## Repository layout
 
-**v0.5 candidate focus:** reliability and uncertainty reasoning, constitutive-model selection/audit, measurement uncertainty, standards/codes evidence handling, and reviewer-response traceability. Domain packs should add geotechnical ontology/checklists without duplicating core reasoning.
+```text
+Geotechnical-Research-Skills/
+├── README.md
+├── CHANGELOG.md
+├── registry.yaml
+├── docs/
+├── examples/
+├── scripts/
+├── tests/
+└── skills/
+```
 
-## License
+## Contribution rule
 
-MIT. Third-party papers, standards, manuals, software, and datasets retain their own licenses and terms.
+A new skill should only be added if it introduces a distinct scientific reasoning capability or a reusable integrity gate. Do not add a solver wrapper merely because a software package is popular.

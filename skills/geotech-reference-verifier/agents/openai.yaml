@@ -1,0 +1,4 @@
+interface:
+  display_name: Geotech Reference Verifier
+  short_description: Verify reference identity and metadata integrity
+  default_prompt: Use $geotech-reference-verifier to audit these references for existence, identity, metadata drift, identifier mismatch, duplication, and suspected fabrication.

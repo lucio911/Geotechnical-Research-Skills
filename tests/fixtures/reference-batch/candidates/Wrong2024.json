@@ -1,0 +1,13 @@
+{
+  "candidates": [
+    {
+      "source": "crossref",
+      "doi": "10.9999/wrong",
+      "title": "Dynamic behavior of offshore wind turbine towers",
+      "authors": ["Alice Smith", "Robert Jones"],
+      "year": 2019,
+      "venue": "Marine Structures",
+      "is_retracted": false
+    }
+  ]
+}

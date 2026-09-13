@@ -1,0 +1,4 @@
+interface:
+  display_name: Geotech Reference Format
+  short_description: Render verified references with deterministic journal styles
+  default_prompt: Use $geotech-reference-format to normalize verified metadata and audit/render these references against the target journal style without inventing missing bibliographic fields.

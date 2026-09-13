@@ -1,0 +1,20 @@
+{
+  "candidates": [
+    {
+      "source": "crossref",
+      "source_url": "fixture://crossref/10.1038/nature12373",
+      "doi": "10.1038/nature12373",
+      "title": "Completely unrelated tunnel lining behaviour under seismic loading",
+      "authors": ["R. Different", "S. Researcher"],
+      "year": 2019,
+      "venue": "Tunnelling and Underground Space Technology",
+      "publisher": "Example Publisher",
+      "volume": "91",
+      "issue": "",
+      "pages": "1-12",
+      "type": "journal-article",
+      "url": "https://doi.org/10.1038/nature12373",
+      "is_retracted": false
+    }
+  ]
+}
