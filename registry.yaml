@@ -1,49 +1,91 @@
 version: "0.5.0"
 project: geotechnical-research-skills
 focus: citation-integrity-core
+marketplace:
+  type: skill-pack
+  ecosystems:
+    - deepseek-harness
+    - agent-skills
+  discovery_topics:
+    - dsh-skill
+    - deepseek-harness
+    - agent-skills
+    - geotechnical-engineering
+    - scientific-research
+    - research-agent
+  keywords:
+    - geotechnical-research
+    - citation-integrity
+    - evidence-graph
+    - literature-review
+    - experiment-design
+    - statistics
+    - parameter-calibration
+    - academic-writing
 skills:
   - name: geotech-router
     pack: core
+    tags: [deepseek-harness, routing, research-workflow, agent-skills]
   - name: geotech-project-ledger
     pack: core
+    tags: [research-provenance, project-state, decision-log, reproducibility]
   - name: geotech-evidence-ledger
     pack: evidence-core
+    tags: [evidence-graph, provenance, claim-traceability, scientific-integrity]
   - name: geotech-literature-review
     pack: evidence-core
+    tags: [literature-review, evidence-synthesis, contradiction-mapping, research-gap]
   - name: geotech-paper-spine
     pack: evidence-core
+    tags: [academic-writing, argument-structure, claim-architecture, manuscript-design]
   - name: geotech-reference-verifier
     pack: citation-core
+    tags: [citation-integrity, reference-verification, doi, hallucination-detection]
   - name: geotech-citation-fidelity
     pack: citation-core
+    tags: [citation-audit, claim-support, source-verification, scientific-integrity]
   - name: geotech-bibliography-audit
     pack: citation-core
+    tags: [bibtex, bibliography, citation-consistency, duplicate-detection]
   - name: geotech-reference-format
     pack: citation-core
+    tags: [csl, reference-formatting, journal-style, bibliography]
   - name: geotech-paper-reader
     pack: research-core
+    tags: [paper-reading, critical-reading, evidence-extraction, literature]
   - name: geotech-gap-novelty
     pack: research-core
+    tags: [research-gap, novelty, hypothesis, research-design]
   - name: geotech-theory-derivation
     pack: research-core
+    tags: [theory, mechanics, model-derivation, state-variables]
   - name: geotech-experiment-design
     pack: quantitative-core
+    tags: [experiment-design, hypothesis-testing, confounding, replication]
   - name: geotech-data-qc
     pack: quantitative-core
+    tags: [data-quality, sensor-qc, provenance, preprocessing]
   - name: geotech-statistics
     pack: quantitative-core
+    tags: [statistics, uncertainty, effect-size, repeated-measures]
   - name: geotech-parameter-calibration
     pack: quantitative-core
+    tags: [calibration, identifiability, validation, model-comparison]
   - name: geotech-unit-dimension-audit
     pack: quantitative-core
+    tags: [units, dimensional-analysis, normalization, engineering-checks]
   - name: geotech-numerical-planner
     pack: methods
+    tags: [numerical-modelling, verification, sensitivity-analysis, simulation-design]
   - name: geotech-result-to-claim
     pack: research-core
+    tags: [claim-audit, evidence-strength, mechanism, result-interpretation]
   - name: geotech-scientific-figure
     pack: communication
+    tags: [scientific-figures, visualization, evidence-communication, publication]
   - name: geotech-pre-submission-reviewer
     pack: research-core
+    tags: [peer-review, manuscript-audit, pre-submission, scientific-integrity]
 roadmap:
   - geotech-reliability-uq
   - geotech-constitutive-model
