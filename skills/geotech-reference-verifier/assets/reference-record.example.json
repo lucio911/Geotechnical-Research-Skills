@@ -1,34 +1,22 @@
 {
   "reference_id": "SRC-023",
   "original": {
-    "title": "Cyclic degradation of pile-soil interface in calcareous sand",
+    "title": "Illustrative unresolved reference record",
     "authors": [
-      "Li X",
-      "Wang Y"
+      "Example Author"
     ],
-    "year": 2024,
-    "doi": "10.0000/example.2024.001"
+    "year": 2024
   },
-  "resolved": {
-    "title": "Cyclic degradation of pile-soil interface in calcareous sand",
-    "authors": [
-      "Li X",
-      "Wang Y"
-    ],
-    "year": 2024,
-    "doi": "10.0000/example.2024.001",
-    "source": "publisher/crossref"
-  },
+  "resolved": {},
   "checks": {
-    "identifier_resolves": true,
-    "identity_match": true,
-    "title_match": "exact",
-    "author_match": "compatible",
-    "year_match": true,
-    "venue_match": true
+    "identifier_resolves": false,
+    "bibliographic_search_resolves": false,
+    "identity_match": false
   },
-  "publication_status": "version_of_record",
-  "verdict": "VERIFIED",
-  "confidence": "high",
-  "human_review": false
+  "publication_status": "unknown",
+  "verdict": "UNRESOLVED",
+  "confidence": "low",
+  "human_review": false,
+  "requires_human_review": true,
+  "note": "Synthetic placeholder used only to demonstrate unresolved-state structure; it is not presented as a real publication."
 }

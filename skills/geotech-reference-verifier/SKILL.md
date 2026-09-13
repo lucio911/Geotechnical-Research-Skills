@@ -91,6 +91,10 @@ Use `references/reference-record-schema.md` and `assets/reference-record.example
 - The online resolver can emit `VERIFIED`, `VERIFIED_WITH_DRIFT`, `IDENTIFIER_MISMATCH`, `AMBIGUOUS`, or `UNRESOLVED`; it never auto-confirms fabrication.
 - Batch `UNRESOLVED` and `AMBIGUOUS` results remain human-review items; they are never converted automatically to fabrication findings.
 
+## Stop condition
+
+Stop when every audited reference has either (a) an auditable identity decision backed by resolved provenance and field-level checks, or (b) an explicit unresolved/high-risk status with the required human action recorded. Missing evidence must remain `UNRESOLVED`/`HUMAN_DECISION_REQUIRED`; never upgrade it to `VERIFIED` by inference.
+
 For online identity resolution use `scripts/resolve_reference.py`. It queries public metadata services but keeps retrieval separate from deterministic identity scoring.
 
 For whole-bibliography forensics use `scripts/audit_references.py`.

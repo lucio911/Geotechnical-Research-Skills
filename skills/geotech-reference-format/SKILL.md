@@ -49,4 +49,8 @@ May accept:
 
 Read `references/metadata-vs-style.md`, `references/csl-pipeline.md`, and `references/geotechnical-journal-checklist.md`.
 
+## Stop condition
+
+Formatting is complete only when reference identity has been verified, the target style and processor provenance are declared, rendered output exists, and `style_verified_against_journal_instructions` is explicitly `true`. Otherwise report formatting as incomplete rather than inferring compliance from similar punctuation.
+
 Use `scripts/check_render_manifest.py` to validate the declared style/render provenance.

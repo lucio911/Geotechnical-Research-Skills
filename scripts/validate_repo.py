@@ -30,7 +30,6 @@ def frontmatter(text: str):
 
 
 def has_skill_trigger(text: str, skill: str) -> bool:
-    """Accept legacy list-style and current mapping-style trigger fixtures."""
     return bool(
         re.search(rf"(?m)^\s*skill:\s*{re.escape(skill)}\s*$", text)
         or re.search(rf"(?m)^\s{{2}}{re.escape(skill)}:\s*$", text)
@@ -51,7 +50,6 @@ def main():
     count = 0
     skill_dirs = sorted(p for p in SKILLS.iterdir() if p.is_dir())
 
-    # Agent Skills structural checks retained from v0.4.
     for d in skill_dirs:
         count += 1
         if d.name in EXCLUDED_SKILLS:
@@ -92,7 +90,6 @@ def main():
             if f"${d.name}" not in agent_text:
                 warnings.append(f"{d.name}: default prompt does not explicitly cite ${d.name}")
 
-    # Registry must be exact: no missing or stale skills.
     registry_file = ROOT / "registry.yaml"
     if not registry_file.exists():
         errors.append("registry.yaml is required")
@@ -108,7 +105,6 @@ def main():
     for skill in sorted(registered - actual):
         errors.append(f"registry.yaml: stale entry {skill}")
 
-    # Preserve every v0.4 Research/Evidence/Quantitative-Core release requirement.
     core_requirements = {
         "geotech-paper-reader": ["references/paper-card-template.md", "references/extraction-confidence.md", "references/comparison-matrix.md"],
         "geotech-gap-novelty": ["references/novelty-framework.md", "references/saturation-test.md", "references/novelty-claims.md"],
@@ -125,7 +121,6 @@ def main():
         "geotech-unit-dimension-audit": ["references/dimension-rules.md", "references/geotech-unit-traps.md", "references/normalization.md", "assets/variable-register.example.json", "scripts/check_variable_register.py"],
     }
 
-    # v0.5 is additive: citation requirements extend rather than replace v0.4 gates.
     citation_requirements = {
         "geotech-reference-verifier": [
             "references/reference-status-taxonomy.md", "references/reference-record-schema.md",
@@ -148,7 +143,6 @@ def main():
                 if not (SKILLS / skill / rel).exists():
                     errors.append(f"{skill}: {release_name} required file missing: {rel}")
 
-    # Preserve v0.4 routing regression tests.
     trigger_file = ROOT / "tests" / "trigger_cases.yaml"
     if not trigger_file.exists():
         errors.append("tests/trigger_cases.yaml is required")
@@ -158,7 +152,6 @@ def main():
             if not has_skill_trigger(trigger_text, skill):
                 errors.append(f"trigger_cases.yaml: missing trigger case for {skill}")
 
-    # Add v0.5 citation routing regression tests.
     citation_trigger_file = ROOT / "tests" / "citation_trigger_cases.yaml"
     if not citation_trigger_file.exists():
         errors.append("tests/citation_trigger_cases.yaml is required")
@@ -176,6 +169,7 @@ def main():
         ROOT / "tests" / "test_citation_integrity.py",
         ROOT / "tests" / "test_reference_resolver.py",
         ROOT / "tests" / "test_batch_reference_forensics.py",
+        ROOT / "tests" / "test_citation_review_fixes.py",
         ROOT / "tests" / "fixtures" / "reference-batch" / "references.bib",
         SKILLS / "geotech-evidence-ledger" / "assets" / "citation-evidence-graph.example.json",
     ]
@@ -183,13 +177,13 @@ def main():
         if not p.exists():
             errors.append(f"v0.5 required file missing: {p.relative_to(ROOT)}")
 
-    # Execute all deterministic smoke/negative tests from previous releases plus v0.5.
     tests = [
         ROOT / "tests" / "test_evidence_graph.py",
         ROOT / "tests" / "test_quantitative_core.py",
         ROOT / "tests" / "test_citation_integrity.py",
         ROOT / "tests" / "test_reference_resolver.py",
         ROOT / "tests" / "test_batch_reference_forensics.py",
+        ROOT / "tests" / "test_citation_review_fixes.py",
     ]
     for path in tests:
         if not path.exists():

@@ -64,4 +64,8 @@ Use `references/citation-instance-schema.md` and report:
 - recommended manuscript action;
 - confidence and unresolved limitations.
 
+## Stop condition
+
+Stop when the exact manuscript proposition has been compared against inspectable source evidence and the citation instance has either an evidence-backed fidelity grade or an explicit `F0`/uncertain state. Grades `F3`–`F5` require both a source locator and a source proposition. Never upgrade a citation because the source merely appears relevant.
+
 Use `scripts/audit_citation_map.py` for deterministic structure checks.
