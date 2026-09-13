@@ -6,5 +6,5 @@
   "metadata_source": "references.canonical.json",
   "rendered_output": "references.formatted.txt",
   "identity_verified": true,
-  "style_verified_against_journal_instructions": false
+  "style_verified_against_journal_instructions": true
 }
