@@ -16,6 +16,7 @@ RELATIONS = {
     "bounds","visualized_by","reported_in","concludes","cites","cited_as","depends_on",
 }
 EVIDENCE_REL={"supports","contradicts","consistent_with","discriminates","explains","validates"}
+CITATION_CLAIM_REL={"supports","contradicts","consistent_with"}
 GRADE={f"E{i}" for i in range(6)}
 FIDELITY={f"F{i}" for i in range(6)}
 
@@ -84,10 +85,17 @@ def main():
         if rel=="parameterizes" and not (node_types.get(src)=="parameter_set" and node_types.get(dst) in {"analysis","method"}): errors.append(f"edge {i}: parameterizes must be PAR -> ANA/MTH")
         if rel=="validates" and node_types.get(src) not in {"result","source"}: errors.append(f"edge {i}: validates must originate from RES/SRC evidence")
         if rel=="cited_as" and not (node_types.get(src)=="source" and node_types.get(dst)=="citation"): errors.append(f"edge {i}: cited_as must be SRC -> CIT")
-        if node_types.get(src)=="citation" and rel in {"supports","contradicts","consistent_with"}:
+
+        citation_claim_edge = node_types.get(src)=="citation" and rel in CITATION_CLAIM_REL
+        if citation_claim_edge:
+            if node_types.get(dst)!="claim":
+                errors.append(f"edge {i}: citation fidelity relation must be CIT -> CLM")
             fg=e.get("fidelity_grade")
             if fg is None: warnings.append(f"edge {i} {src}->{dst}: citation relation has no fidelity_grade")
             elif fg not in FIDELITY: errors.append(f"edge {i}: invalid fidelity grade {fg}")
+        elif "fidelity_grade" in e:
+            errors.append(f"edge {i}: fidelity_grade is only valid on CIT -> CLM support/contradiction/consistency edges")
+
     for nid,ntype in node_types.items():
         inc={e["relation"] for e in incoming.get(nid,[])}
         if ntype=="quality_control" and "assessed_by" not in inc: errors.append(f"{nid}: QC node has no DAT -> assessed_by provenance")
@@ -97,7 +105,8 @@ def main():
             if "cited_as" not in inc: errors.append(f"{nid}: citation instance has no incoming SRC -> cited_as relation")
             out={e["relation"] for e in outgoing.get(nid,[])}
             if "reported_in" not in out: warnings.append(f"{nid}: citation instance is not located in a manuscript section")
-            if not ({"supports","contradicts","consistent_with"}&out): warnings.append(f"{nid}: citation instance has no explicit claim relation")
+            valid_claim_links=[e for e in outgoing.get(nid,[]) if e.get("relation") in CITATION_CLAIM_REL and node_types.get(e.get("to"))=="claim"]
+            if not valid_claim_links: warnings.append(f"{nid}: citation instance has no explicit CIT -> CLM relation")
         elif ntype=="result" and not ({"produces","yields","supports","tests"}&inc): errors.append(f"{nid}: result has no upstream provenance")
         elif ntype=="claim":
             if not ({"supports","discriminates","explains","depends_on","tests","consistent_with"}&inc): errors.append(f"{nid}: claim has no supporting/dependency edge")
