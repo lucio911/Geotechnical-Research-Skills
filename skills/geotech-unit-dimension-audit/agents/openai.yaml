@@ -1,0 +1,4 @@
+interface:
+  display_name: "Geotech Unit Dimension Audit"
+  short_description: "Audit units, dimensions, normalization, sign conventions, reference states, stress measures, and dimensionless groups in"
+  default_prompt: "Use $geotech-unit-dimension-audit to audit this geotechnical research task and return explicit scientific handoff objects."

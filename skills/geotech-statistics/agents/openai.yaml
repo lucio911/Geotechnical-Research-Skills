@@ -1,0 +1,4 @@
+interface:
+  display_name: "Geotech Statistics"
+  short_description: "Choose and audit statistical inference for geotechnical experiments and model results, including replication, repeated m"
+  default_prompt: "Use $geotech-statistics to audit this geotechnical research task and return explicit scientific handoff objects."

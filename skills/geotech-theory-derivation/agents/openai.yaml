@@ -1,0 +1,4 @@
+interface:
+  display_name: "Geotech Theory Derivation"
+  short_description: "Derive and audit geotechnical theory, state variables, and validation."
+  default_prompt: "Use $geotech-theory-derivation to handle this geotechnical research task rigorously and state evidence limits."

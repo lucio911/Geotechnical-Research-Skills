@@ -1,0 +1,11 @@
+{
+  "variables": [
+    {"symbol": "sigma3", "meaning": "confining pressure", "dimension": "F/L^2", "unit": "kPa", "stress_measure": "effective", "sign": "compression-positive"},
+    {"symbol": "rp", "meaning": "cumulative plastic displacement", "dimension": "L", "unit": "mm"},
+    {"symbol": "Br", "meaning": "particle breakage index", "dimension": "1", "unit": "1"},
+    {"symbol": "G_G0", "meaning": "normalized shear modulus", "dimension": "1", "unit": "1", "reference": "G0 at declared initial state"}
+  ],
+  "dimensionless_function_arguments": [
+    {"expression": "lambda * rp", "status": "dimensionless", "note": "lambda has unit 1/mm"}
+  ]
+}

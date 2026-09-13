@@ -1,0 +1,119 @@
+version: "0.4.0"
+cases:
+  geotech-paper-reader:
+    positive:
+      - "Read these three cyclic pile papers and extract comparable test conditions, stress states, degradation metrics, mechanisms, and limitations."
+      - "Build a structured card for this tunnel lining paper so I can reproduce its numerical method."
+      - "What exactly does this paper prove about particle breakage, and under what conditions?"
+    negative:
+      - "Polish this abstract into SCI English."
+      - "Write Python code to plot my CSV."
+
+  geotech-gap-novelty:
+    positive:
+      - "Is varying initial crack depth under progressive surcharge enough novelty for a TUST paper?"
+      - "Compare my proposed cyclic degradation model with the nearest literature and tell me the real gap."
+      - "My paper only changes calcareous sand confining pressure. Is this parameter sweep scientifically novel?"
+    negative:
+      - "Summarize this one paper."
+      - "Fix the grammar in my conclusion."
+
+  geotech-theory-derivation:
+    positive:
+      - "Check whether using both cumulative plastic displacement and breakage rate in my stiffness degradation law double counts damage."
+      - "Derive this shear-displacement pile model from equilibrium and check the limiting cases."
+      - "Can I call this fitted degradation equation mechanism-based?"
+    negative:
+      - "Find papers about pile cyclic loading."
+      - "Make this contour plot prettier."
+
+  geotech-result-to-claim:
+    positive:
+      - "I added U2, ovalization and crack propagation curves. What claims are actually supported?"
+      - "Can I say particle breakage governs stiffness degradation from these three curves?"
+      - "Turn these numerical results into defensible Results and Discussion conclusions without overclaiming."
+    negative:
+      - "What constitutive model should I use before running the study?"
+      - "Search GitHub for geotechnical skills."
+
+  geotech-pre-submission-reviewer:
+    positive:
+      - "Review this manuscript like hostile reviewers and identify rejection-level weaknesses."
+      - "Before I submit to Computers and Geotechnics, audit mechanics, validation, novelty and conclusions."
+      - "Tell me the minimum new analyses needed to make this paper defensible."
+    negative:
+      - "Write the first draft of my introduction."
+      - "Extract Table 2 from this paper."
+
+  geotech-literature-review:
+    positive:
+      - "Build a mechanism-based literature map for cyclic pile degradation and show contradictory findings by stress state and soil type."
+      - "Which papers directly support my mechanism claim, which are only background, and what are the nearest novelty comparators?"
+      - "Review tunnel crack studies and separate parameter gaps from mechanism gaps."
+    negative:
+      - "Summarize this single attached paper."
+      - "Rewrite my Methods section."
+
+  geotech-evidence-ledger:
+    positive:
+      - "Trace every conclusion in Chapter 4 back to figures, results, model outputs and literature sources."
+      - "Build an evidence graph linking my U2, ovalization and crack-propagation results to the claims they actually support."
+      - "Which claims in this manuscript are orphaned or depend only on other claims?"
+    negative:
+      - "Find recent papers on tunnel deformation."
+      - "Choose a journal for this manuscript."
+
+  geotech-paper-spine:
+    positive:
+      - "My Results section has 14 figures but feels fragmented. Rebuild the argument around one main claim and supporting claims."
+      - "Map each figure to the scientific question and tell me which figures should be combined or removed."
+      - "Check whether my Abstract, Results, Discussion and Conclusions make the same bounded claim."
+    negative:
+      - "Check whether Equation 12 is dimensionally consistent."
+      - "Extract the boundary conditions from this paper."
+
+  geotech-experiment-design:
+    positive:
+      - "Design a cyclic triaxial experiment to separate confining-pressure effects from density and loading-sequence effects."
+      - "Does my stepped-amplitude pile test have confounding or pseudo-replication problems?"
+      - "Build a defensible test matrix and measurement plan for a tunnel model test."
+    negative:
+      - "Fit this equation to my existing data."
+      - "Polish the Experimental Methods section."
+
+  geotech-data-qc:
+    positive:
+      - "Audit these load-displacement-pore-pressure CSVs before I calculate hysteresis and stiffness degradation."
+      - "Check whether my first ten cycles are seating artifacts or valid response and document exclusions."
+      - "Build a data provenance and QC record for this experimental dataset."
+    negative:
+      - "Design a new experiment from scratch."
+      - "Write the Discussion section from these figures."
+
+  geotech-statistics:
+    positive:
+      - "I have three specimens per confining pressure and 100 cycles per specimen. What is the correct n and statistical model?"
+      - "Is this statistically significant change also engineering-significant?"
+      - "Audit my regression, confidence intervals and repeated-measures interpretation."
+    negative:
+      - "Check the units in Equation 8."
+      - "Find recent papers about cyclic loading."
+
+  geotech-parameter-calibration:
+    positive:
+      - "Fit and audit my Br-rp-G/G0 degradation model without double counting or calibration-validation leakage."
+      - "Are these four parameters identifiable, or am I just overfitting?"
+      - "Compare reduced and full models using independent validation rather than R-squared alone."
+    negative:
+      - "Summarize this paper's constitutive model."
+      - "Check whether my force sensor drifted."
+
+  geotech-unit-dimension-audit:
+    positive:
+      - "Check whether exp(-lambda*rp) is dimensionally valid when rp is in mm."
+      - "Audit Pa/kPa/MPa, percent strain, G/G0 and sign conventions throughout these equations and tables."
+      - "Is multiplying rp by 100 before taking a 0.43 power physically and dimensionally defensible?"
+    negative:
+      - "Choose the best statistical test for three groups."
+      - "Review the novelty of my tunnel paper."
+

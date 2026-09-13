@@ -1,0 +1,34 @@
+{
+  "project": {
+    "id": "example-tunnel-crack",
+    "version": "0.4.0"
+  },
+  "nodes": [
+    {"id": "RQ-001", "type": "research_question", "label": "How does initial crack depth affect lining deformation under progressive surcharge?", "status": "active"},
+    {"id": "MTH-001", "type": "method", "label": "Progressive surcharge numerical study with controlled initial crack depth", "status": "active"},
+    {"id": "DAT-001", "type": "dataset", "label": "Crown U2 and ovalization outputs for all crack-depth cases", "status": "active"},
+    {"id": "RES-001", "type": "result", "label": "Crown vertical displacement increases nonlinearly with surcharge and differs by initial crack depth", "status": "active"},
+    {"id": "RES-002", "type": "result", "label": "Ovalization increases concurrently with crown displacement", "status": "active"},
+    {"id": "MEC-001", "type": "mechanism", "label": "Crack-induced local stiffness loss is consistent with redistribution and amplified ovalization", "status": "provisional"},
+    {"id": "CLM-001", "type": "claim", "label": "Within the tested model conditions, increasing initial crack depth is associated with stronger deformation amplification under surcharge", "status": "active"},
+    {"id": "BND-001", "type": "boundary", "label": "Applies to the tested geometry, crack orientation, constitutive assumptions, and surcharge range only", "status": "active"},
+    {"id": "FIG-001", "type": "figure", "label": "Crown U2 and ovalization versus surcharge", "status": "active"},
+    {"id": "SEC-001", "type": "section", "label": "Results section on critical crack configurations", "status": "active"},
+    {"id": "CON-001", "type": "conclusion", "label": "Initial crack depth materially affects deformation amplification within the investigated conditions", "status": "active"}
+  ],
+  "edges": [
+    {"from": "MTH-001", "to": "RQ-001", "relation": "addresses"},
+    {"from": "MTH-001", "to": "DAT-001", "relation": "produces"},
+    {"from": "DAT-001", "to": "RES-001", "relation": "yields"},
+    {"from": "DAT-001", "to": "RES-002", "relation": "yields"},
+    {"from": "RES-001", "to": "MEC-001", "relation": "consistent_with", "evidence_grade": "E2"},
+    {"from": "RES-002", "to": "MEC-001", "relation": "consistent_with", "evidence_grade": "E2"},
+    {"from": "RES-001", "to": "CLM-001", "relation": "supports", "evidence_grade": "E2"},
+    {"from": "RES-002", "to": "CLM-001", "relation": "supports", "evidence_grade": "E2"},
+    {"from": "BND-001", "to": "CLM-001", "relation": "bounds"},
+    {"from": "RES-001", "to": "FIG-001", "relation": "visualized_by"},
+    {"from": "RES-002", "to": "FIG-001", "relation": "visualized_by"},
+    {"from": "CLM-001", "to": "SEC-001", "relation": "reported_in"},
+    {"from": "CLM-001", "to": "CON-001", "relation": "concludes"}
+  ]
+}

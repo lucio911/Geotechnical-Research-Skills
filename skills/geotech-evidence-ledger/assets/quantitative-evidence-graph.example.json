@@ -1,0 +1,97 @@
+{
+  "project": {
+    "id": "example-cyclic-calibration",
+    "version": "0.4.0"
+  },
+  "nodes": [
+    {
+      "id": "RQ-001",
+      "type": "research_question",
+      "label": "Can a parsimonious degradation law predict normalized stiffness outside its calibration stress level?",
+      "status": "active"
+    },
+    {
+      "id": "MTH-001",
+      "type": "method",
+      "label": "Cyclic loading test program with separated calibration and validation stress levels",
+      "status": "active"
+    },
+    {
+      "id": "DAT-001",
+      "type": "dataset",
+      "label": "Calibration dataset at declared stress/amplitude combinations",
+      "status": "qc-passed"
+    },
+    {
+      "id": "QC-001",
+      "type": "quality_control",
+      "label": "Calibration data pass provenance, missingness, cycle alignment, and sensor-range checks",
+      "status": "active"
+    },
+    {
+      "id": "ANA-001",
+      "type": "analysis",
+      "label": "Bounded nonlinear calibration with predefined weighted residual objective",
+      "status": "active"
+    },
+    {
+      "id": "PAR-001",
+      "type": "parameter_set",
+      "label": "Calibrated degradation-model parameter set",
+      "status": "active"
+    },
+    {
+      "id": "DAT-002",
+      "type": "dataset",
+      "label": "Independent validation dataset at held-out stress level",
+      "status": "qc-passed"
+    },
+    {
+      "id": "QC-002",
+      "type": "quality_control",
+      "label": "Validation data pass the same QC policy without refitting thresholds",
+      "status": "active"
+    },
+    {
+      "id": "ANA-002",
+      "type": "analysis",
+      "label": "Fixed-parameter prediction on held-out validation cases",
+      "status": "active"
+    },
+    {
+      "id": "RES-001",
+      "type": "result",
+      "label": "Held-out prediction error remains within the predefined acceptance band and residuals show no major systematic trend",
+      "status": "active"
+    },
+    {
+      "id": "CLM-001",
+      "type": "claim",
+      "label": "Within the tested material and loading domain, the calibrated degradation law has predictive support beyond its fitting cases",
+      "status": "active"
+    },
+    {
+      "id": "BND-001",
+      "type": "boundary",
+      "label": "Claim is limited to the tested material state, stress range, amplitudes, cycle range, and measurement definitions",
+      "status": "active"
+    }
+  ],
+  "edges": [
+    {"from": "MTH-001", "to": "RQ-001", "relation": "addresses"},
+    {"from": "MTH-001", "to": "DAT-001", "relation": "produces"},
+    {"from": "DAT-001", "to": "QC-001", "relation": "assessed_by"},
+    {"from": "DAT-001", "to": "ANA-001", "relation": "analyzed_by"},
+    {"from": "QC-001", "to": "ANA-001", "relation": "qualifies"},
+    {"from": "ANA-001", "to": "PAR-001", "relation": "estimates"},
+    {"from": "MTH-001", "to": "DAT-002", "relation": "produces"},
+    {"from": "DAT-002", "to": "QC-002", "relation": "assessed_by"},
+    {"from": "DAT-002", "to": "ANA-002", "relation": "analyzed_by"},
+    {"from": "QC-002", "to": "ANA-002", "relation": "qualifies"},
+    {"from": "PAR-001", "to": "ANA-002", "relation": "parameterizes"},
+    {"from": "ANA-002", "to": "RES-001", "relation": "yields"},
+    {"from": "RES-001", "to": "PAR-001", "relation": "validates", "evidence_grade": "E3"},
+    {"from": "RES-001", "to": "CLM-001", "relation": "supports", "evidence_grade": "E3"},
+    {"from": "BND-001", "to": "CLM-001", "relation": "bounds"}
+  ]
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Geotech Router"
+  short_description: "Route geotechnical research reasoning to the minimum skills."
+  default_prompt: "Use $geotech-router to handle this geotechnical research task rigorously and state evidence limits."

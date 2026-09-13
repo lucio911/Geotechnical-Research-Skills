@@ -1,0 +1,4 @@
+interface:
+  display_name: "Geotech Paper Reader"
+  short_description: "Extract auditable geotechnical paper evidence and conditions."
+  default_prompt: "Use $geotech-paper-reader to handle this geotechnical research task rigorously and state evidence limits."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Geotech Pre Submission Reviewer"
+  short_description: "Run adversarial, role-separated review before submission."
+  default_prompt: "Use $geotech-pre-submission-reviewer to handle this geotechnical research task rigorously and state evidence limits."

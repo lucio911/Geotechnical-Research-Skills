@@ -1,0 +1,4 @@
+interface:
+  display_name: "Geotech Result To Claim"
+  short_description: "Match scientific claim strength to geotechnical evidence."
+  default_prompt: "Use $geotech-result-to-claim to handle this geotechnical research task rigorously and state evidence limits."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Geotech Experiment Design"
+  short_description: "Design and audit geotechnical experiments so hypotheses, factors, controls, repetitions, boundary conditions, scale effe"
+  default_prompt: "Use $geotech-experiment-design to audit this geotechnical research task and return explicit scientific handoff objects."

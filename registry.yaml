@@ -1,0 +1,48 @@
+version: "0.4.0"
+project: geotechnical-research-skills
+focus: experimental-quantitative-core
+skills:
+  - name: geotech-router
+    pack: core
+  - name: geotech-project-ledger
+    pack: core
+  - name: geotech-evidence-ledger
+    pack: evidence-core
+  - name: geotech-literature-review
+    pack: evidence-core
+  - name: geotech-paper-reader
+    pack: research-core
+  - name: geotech-gap-novelty
+    pack: research-core
+  - name: geotech-theory-derivation
+    pack: research-core
+  - name: geotech-experiment-design
+    pack: quantitative-core
+  - name: geotech-data-qc
+    pack: quantitative-core
+  - name: geotech-statistics
+    pack: quantitative-core
+  - name: geotech-parameter-calibration
+    pack: quantitative-core
+  - name: geotech-unit-dimension-audit
+    pack: quantitative-core
+  - name: geotech-numerical-planner
+    pack: methods
+  - name: geotech-result-to-claim
+    pack: research-core
+  - name: geotech-scientific-figure
+    pack: communication
+  - name: geotech-paper-spine
+    pack: evidence-core
+  - name: geotech-pre-submission-reviewer
+    pack: research-core
+roadmap:
+  - geotech-reliability-uq
+  - geotech-constitutive-model
+  - geotech-codes-standards
+  - geotech-response-to-reviewers
+  - geotech-measurement-uncertainty
+excluded_from_core:
+  - solver-control skills
+  - solver GUI automation
+  - software-specific debugging wrappers

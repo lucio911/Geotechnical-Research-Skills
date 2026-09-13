@@ -1,0 +1,4 @@
+interface:
+  display_name: "Geotech Literature Review"
+  short_description: "Use geotech-literature-review for geotechnical research reasoning."
+  default_prompt: "Use $geotech-literature-review to handle this geotechnical research task rigorously and state evidence limits."

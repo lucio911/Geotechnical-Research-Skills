@@ -1,0 +1,4 @@
+interface:
+  display_name: "Geotech Evidence Ledger"
+  short_description: "Use geotech-evidence-ledger for geotechnical research reasoning."
+  default_prompt: "Use $geotech-evidence-ledger to handle this geotechnical research task rigorously and state evidence limits."

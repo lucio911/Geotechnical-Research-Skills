@@ -1,0 +1,4 @@
+interface:
+  display_name: "Geotech Project Ledger"
+  short_description: "Use geotech-project-ledger for geotechnical research reasoning."
+  default_prompt: "Use $geotech-project-ledger to handle this geotechnical research task rigorously and state evidence limits."

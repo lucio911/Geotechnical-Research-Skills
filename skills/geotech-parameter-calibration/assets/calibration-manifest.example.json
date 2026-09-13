@@ -1,0 +1,12 @@
+{
+  "model_id": "cyclic-degradation-demo",
+  "parameters": [
+    {"name": "beta", "unit": "1", "lower": 0.0, "upper": 2.0, "initial": 0.4},
+    {"name": "lambda", "unit": "1/mm", "lower": 0.0, "upper": 500.0, "initial": 40.0}
+  ],
+  "calibration_case_ids": ["S200-A50-01", "S200-A100-01", "S200-A150-01"],
+  "validation_case_ids": ["S300-A100-01", "S400-A100-01"],
+  "objective": "weighted squared error in normalized stiffness",
+  "optimizer": "declared-by-user",
+  "validation_type": "independent-held-out"
+}

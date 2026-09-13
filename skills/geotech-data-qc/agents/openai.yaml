@@ -1,0 +1,4 @@
+interface:
+  display_name: "Geotech Data QC"
+  short_description: "Audit geotechnical raw and processed data before scientific inference."
+  default_prompt: "Use $geotech-data-qc to audit this geotechnical dataset, preserve provenance, and identify data-quality risks before analysis."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Geotech Gap Novelty"
+  short_description: "Stress-test geotechnical gaps and novelty beyond parameter sweeps."
+  default_prompt: "Use $geotech-gap-novelty to handle this geotechnical research task rigorously and state evidence limits."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Geotech Numerical Planner"
+  short_description: "Design solver-agnostic numerical studies and verification."
+  default_prompt: "Use $geotech-numerical-planner to handle this geotechnical research task rigorously and state evidence limits."

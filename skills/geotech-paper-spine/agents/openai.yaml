@@ -1,0 +1,4 @@
+interface:
+  display_name: "Geotech Paper Spine"
+  short_description: "Use geotech-paper-spine for geotechnical research reasoning."
+  default_prompt: "Use $geotech-paper-spine to handle this geotechnical research task rigorously and state evidence limits."

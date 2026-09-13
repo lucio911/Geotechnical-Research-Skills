@@ -1,0 +1,4 @@
+interface:
+  display_name: "Geotech Parameter Calibration"
+  short_description: "Design and audit calibration of geotechnical constitutive, degradation, empirical, analytical, or surrogate models with "
+  default_prompt: "Use $geotech-parameter-calibration to audit this geotechnical research task and return explicit scientific handoff objects."

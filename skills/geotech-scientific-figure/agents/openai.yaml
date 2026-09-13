@@ -1,0 +1,4 @@
+interface:
+  display_name: "Geotech Scientific Figure"
+  short_description: "Use geotech-scientific-figure for geotechnical research reasoning."
+  default_prompt: "Use $geotech-scientific-figure to handle this geotechnical research task rigorously and state evidence limits."
